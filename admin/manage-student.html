@@ -1,30 +1,44 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Admin | Manage Students</title>
   <link rel="stylesheet" href="../style.css">
+  <style>
+    .crud-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .crud-buttons a {
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Admin – Manage Students</h1>
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="manage-worksheets.html">Worksheets</a>
-      <a href="../logout.html">Logout</a>
-    </nav>
-  </header>
-  <main>
-    <h2>Student Management (Placeholder)</h2>
-    <p>For this prototype, only worksheet CRUD is implemented in JavaScript. You can later plug in real student CRUD here.</p>
-    <ul>
-      <li><a href="student-create.html">Create Student (static page)</a></li>
-      <li><a href="student-read.html">View Students (static page)</a></li>
-      <li><a href="student-update.html">Update Student (static page)</a></li>
-      <li><a href="student-delete.html">Delete Student (static page)</a></li>
-    </ul>
-  </main>
-  <script src="../script.js"></script>
+<header>
+  <h1>Admin – Manage Students</h1>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="manage-worksheets.html">Worksheets</a>
+    <a href="../logout.html">Logout</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Student Management</h2>
+  <p style="margin-bottom: 1rem;">
+    These are placeholder pages. Student CRUD logic can be implemented later.
+  </p>
+
+  <div class="crud-buttons">
+    <a href="student-create.html"><button class="btn">Create Student</button></a>
+    <a href="student-read.html"><button class="btn secondary">View Students</button></a>
+    <a href="student-update.html"><button class="btn">Update Student</button></a>
+    <a href="student-delete.html"><button class="btn danger">Delete Student</button></a>
+  </div>
+</main>
+
+<script src="../script.js"></script>
 </body>
 </html>
