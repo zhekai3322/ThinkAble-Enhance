@@ -13,13 +13,8 @@ function saveToStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-// Worksheet helpers
-function loadWorksheets() {
-  return loadFromStorage("worksheets");
-}
-function saveWorksheets(data) {
-  saveToStorage("worksheets", data);
-}
+function loadWorksheets() { return loadFromStorage("worksheets"); }
+function saveWorksheets(data) { saveToStorage("worksheets", data); }
 
 // =========================
 // Login
@@ -36,60 +31,51 @@ function initLogin() {
 
     const ADMIN_EMAIL = "admin@thinkable.com";
     const ADMIN_PW = "admin123";
-
     const PARENT_EMAIL = "parent@thinkable.com";
     const PARENT_PW = "parent123";
-
     const STUDENT_EMAIL = "student@thinkable.com";
     const STUDENT_PW = "student123";
 
     if (email === ADMIN_EMAIL && password === ADMIN_PW) {
       window.location.href = "admin/home.html";
-    }
-    else if (email === PARENT_EMAIL && password === PARENT_PW) {
+    } else if (email === PARENT_EMAIL && password === PARENT_PW) {
       window.location.href = "parent/home.html";
-    }
-    else if (email === STUDENT_EMAIL && password === STUDENT_PW) {
+    } else if (email === STUDENT_EMAIL && password === STUDENT_PW) {
       window.location.href = "student/home.html";
-    }
-    else {
+    } else {
       alert("Invalid login. Please check your email and password.");
     }
   });
 }
 
 // =========================
-// Dark Mode (global)
+// Dark Mode
 // =========================
 function applySavedDarkMode() {
   const enabled = localStorage.getItem("darkMode") === "true";
   if (enabled) document.body.classList.add("dark");
 }
-
 function toggleDarkMode() {
   const enabled = document.getElementById("darkModeToggle").checked;
-  if (enabled) document.body.classList.add("dark");
-  else document.body.classList.remove("dark");
+  document.body.classList.toggle("dark", enabled);
   localStorage.setItem("darkMode", enabled);
 }
 
 // =========================
-// Large Text Mode (global)
+// Large Text Mode
 // =========================
 function applySavedLargeText() {
   const enabled = localStorage.getItem("largeText") === "true";
   if (enabled) document.body.classList.add("largeText");
 }
-
 function toggleLargeText() {
   const enabled = document.getElementById("largeTextToggle").checked;
-  if (enabled) document.body.classList.add("largeText");
-  else document.body.classList.remove("largeText");
+  document.body.classList.toggle("largeText", enabled);
   localStorage.setItem("largeText", enabled);
 }
 
 // =========================
-// Parent PIN Lock
+// Parent PIN
 // =========================
 function saveParentPIN() {
   const pin = document.getElementById("parentPIN").value;
@@ -100,8 +86,7 @@ function saveParentPIN() {
 
 function verifyParentPIN() {
   const stored = localStorage.getItem("parentPIN");
-  let entered = prompt("Enter Parent PIN:");
-
+  const entered = prompt("Enter Parent PIN:");
   if (entered !== stored) {
     alert("Incorrect PIN.");
     window.location.href = "home.html";
@@ -109,17 +94,15 @@ function verifyParentPIN() {
 }
 
 // =========================
-// Subscription System
+// Subscription
 // =========================
 function activateSubscription() {
   localStorage.setItem("subscriptionActive", "true");
   alert("Subscription activated!");
 }
-
 function checkSubscriptionLimit() {
   const subscribed = localStorage.getItem("subscriptionActive") === "true";
   const stars = parseInt(localStorage.getItem("stars") || "0");
-
   if (!subscribed && stars >= 3) {
     alert("Free trial ended. Subscribe to unlock more worksheets.");
     window.location.href = "../parent/home.html";
@@ -127,88 +110,80 @@ function checkSubscriptionLimit() {
 }
 
 // =========================
-// Student Scoring System
+// Stars System
 // =========================
 function addStar() {
   let stars = parseInt(localStorage.getItem("stars") || "0");
   stars++;
   localStorage.setItem("stars", stars);
 }
-
 function loadStars() {
-  let stars = parseInt(localStorage.getItem("stars") || "0");
   const starCount = document.getElementById("starCount");
-  if (starCount) starCount.textContent = stars;
+  if (starCount) starCount.textContent = localStorage.getItem("stars") || "0";
 }
 
 // =========================
-// Worksheet Interactions
+// UNIVERSAL WORKSHEET ENGINE
 // =========================
-
-// ---- WORKSHEET 1 ----
-if (window.location.pathname.includes("worksheet-1.html")) {
-  checkSubscriptionLimit();
+function initUniversalWorksheetEngine() {
+  const main = document.querySelector("main");
+  if (!main) return;
 
   const boxes = document.querySelectorAll(".choice-box");
-  boxes.forEach(b => {
-    b.addEventListener("click", () => b.classList.toggle("selected"));
+  const inputs = document.querySelectorAll("input.ws-input");
+
+  if (!boxes.length && !inputs.length) return; // not a worksheet page
+
+  checkSubscriptionLimit();
+
+  const passScore = parseInt(main.dataset.pass || "99");
+  const submitBtn = document.getElementById("submitBtn");
+  const doneBtn = document.getElementById("doneBtn");
+  const resultText = document.getElementById("resultText");
+
+  // --- Multiple Choice Worksheets ---
+  boxes.forEach(box => {
+    box.addEventListener("click", () => {
+      box.classList.toggle("selected");
+    });
   });
 
-  document.getElementById("submitBtn").addEventListener("click", () => {
+  // --- Submit Handler ---
+  submitBtn?.addEventListener("click", () => {
     let score = 0;
+
+    // 1) MCQ scoring
     boxes.forEach(b => {
       if (b.dataset.answer === "true" && b.classList.contains("selected")) {
         score++;
       }
     });
 
-    if (score >= 6) addStar();
-    window.location.href = "home.html";
-  });
-}
-
-// ---- WORKSHEET 2 ----
-if (window.location.pathname.includes("worksheet-2.html")) {
-  checkSubscriptionLimit();
-
-  const boxes = document.querySelectorAll(".choice-box");
-  boxes.forEach(b => {
-    b.addEventListener("click", () => b.classList.toggle("selected"));
-  });
-
-  document.getElementById("submitBtn").addEventListener("click", () => {
-    let score = 0;
-    boxes.forEach(b => {
-      if (b.dataset.answer === "true" && b.classList.contains("selected")) {
-        score++;
-      }
+    // 2) Text-input scoring
+    inputs.forEach(input => {
+      const correct = input.dataset.answer?.trim();
+      const user = input.value.trim();
+      if (correct && user === correct) score++;
     });
 
-    if (score >= 4) addStar();
-    window.location.href = "home.html";
-  });
-}
+    resultText.textContent = "Your score: " + score;
 
-// ---- WORKSHEET 3 ----
-if (window.location.pathname.includes("worksheet-3.html")) {
-  checkSubscriptionLimit();
-
-  const answers = { q1: "5", q2: "7", q3: "4", q4: "10", q5: "6" };
-
-  document.getElementById("submitBtn").addEventListener("click", () => {
-    let score = 0;
-    for (let key in answers) {
-      const user = document.getElementById(key).value.trim();
-      if (user === answers[key]) score++;
+    // Award star
+    if (score >= passScore) {
+      addStar();
     }
 
-    if (score >= 4) addStar();
+    // Show done button
+    doneBtn.style.display = "inline-block";
+  });
+
+  doneBtn?.addEventListener("click", () => {
     window.location.href = "home.html";
   });
 }
 
 // =========================
-// Admin: Worksheet CRUD
+// Admin Worksheet CRUD
 // =========================
 function renderQuestionRow(container, qText = "", aText = "") {
   const row = document.createElement("div");
@@ -242,35 +217,40 @@ function collectWorksheetForm(isEdit = false) {
     return null;
   }
 
-  const qTexts = [...document.querySelectorAll(".question-text")];
-  const aTexts = [...document.querySelectorAll(".question-answer")];
-
-  const questions = qTexts.map(el => el.value.trim());
-  const answerKey = aTexts.map(el => el.value.trim());
+  const questions = [...document.querySelectorAll(".question-text")].map(e => e.value.trim());
+  const answerKey = [...document.querySelectorAll(".question-answer")].map(e => e.value.trim());
 
   const now = new Date().toISOString();
 
-  const result = {
-    title, subject, gradeLevel: grade, description,
-    questions, answerKey, status, updatedAt: now
+  const data = {
+    title,
+    subject,
+    gradeLevel: grade,
+    description,
+    questions,
+    answerKey,
+    status,
+    updatedAt: now
   };
 
   if (!isEdit) {
-    result.id = Date.now();
-    result.createdAt = now;
+    data.id = Date.now();
+    data.createdAt = now;
   }
 
-  return result;
+  return data;
 }
 
-// ---- Create ----
+// Create
 function initWorksheetCreate() {
   const form = document.getElementById("worksheetCreateForm");
   if (!form) return;
 
   const container = document.getElementById("questionsContainer");
-  document.getElementById("addQuestionBtn")
-    .addEventListener("click", () => renderQuestionRow(container));
+
+  document.getElementById("addQuestionBtn").addEventListener("click", () => {
+    renderQuestionRow(container);
+  });
 
   renderQuestionRow(container);
 
@@ -288,7 +268,7 @@ function initWorksheetCreate() {
   });
 }
 
-// ---- List ----
+// List
 function initWorksheetList() {
   const tableBody = document.getElementById("worksheetTable");
   if (!tableBody) return;
@@ -299,23 +279,22 @@ function initWorksheetList() {
     return;
   }
 
-  tableBody.innerHTML =
-    worksheets.map(ws => `
-      <tr>
-        <td>${ws.title}</td>
-        <td>${ws.subject}</td>
-        <td>${ws.gradeLevel}</td>
-        <td><span class="pill">${ws.status}</span></td>
-        <td>${ws.questions.length}</td>
-        <td>
-          <button class="btn sm" onclick="openWorksheetEdit(${ws.id})">Edit</button>
-          <button class="btn sm danger" onclick="deleteWorksheet(${ws.id})">Delete</button>
-        </td>
-      </tr>
-    `).join("");
+  tableBody.innerHTML = worksheets.map(ws => `
+    <tr>
+      <td>${ws.title}</td>
+      <td>${ws.subject}</td>
+      <td>${ws.gradeLevel}</td>
+      <td><span class="pill">${ws.status}</span></td>
+      <td>${ws.questions.length}</td>
+      <td>
+        <button class="btn sm" onclick="openWorksheetEdit(${ws.id})">Edit</button>
+        <button class="btn sm danger" onclick="deleteWorksheet(${ws.id})">Delete</button>
+      </td>
+    </tr>
+  `).join("");
 }
 
-// ---- Edit ----
+// Edit
 function openWorksheetEdit(id) {
   localStorage.setItem("editWorksheetId", id);
   window.location.href = "worksheet-update.html";
@@ -325,9 +304,9 @@ function initWorksheetUpdate() {
   const form = document.getElementById("worksheetUpdateForm");
   if (!form) return;
 
-  const id = localStorage.getItem("editWorksheetId");
+  const id = parseInt(localStorage.getItem("editWorksheetId"));
   const worksheets = loadWorksheets();
-  const ws = worksheets.find(w => w.id == id);
+  const ws = worksheets.find(w => w.id === id);
 
   if (!ws) {
     alert("Worksheet not found.");
@@ -342,8 +321,7 @@ function initWorksheetUpdate() {
   document.getElementById("ws_status").value = ws.status;
 
   const container = document.getElementById("questionsContainer");
-  document.getElementById("addQuestionBtn")
-    .addEventListener("click", () => renderQuestionRow(container));
+  document.getElementById("addQuestionBtn").addEventListener("click", () => renderQuestionRow(container));
 
   ws.questions.forEach((q, i) => {
     renderQuestionRow(container, q, ws.answerKey[i]);
@@ -352,26 +330,29 @@ function initWorksheetUpdate() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const updated = collectWorksheetForm(true);
+
     Object.assign(ws, updated);
     saveWorksheets(worksheets);
 
-    alert("Worksheet updated.");
+    alert("Worksheet updated!");
     window.location.href = "worksheet-read.html";
   });
 }
 
-// ---- Delete ----
+// Delete
 function deleteWorksheet(id) {
   if (!confirm("Delete this worksheet?")) return;
+
   let worksheets = loadWorksheets();
   worksheets = worksheets.filter(w => w.id !== id);
   saveWorksheets(worksheets);
+
   alert("Deleted.");
   window.location.reload();
 }
 
 // =========================
-// Page Auto Init
+// Auto Initialization
 // =========================
 document.addEventListener("DOMContentLoaded", function () {
   initLogin();
@@ -381,4 +362,5 @@ document.addEventListener("DOMContentLoaded", function () {
   loadStars();
   applySavedDarkMode();
   applySavedLargeText();
+  initUniversalWorksheetEngine();
 });

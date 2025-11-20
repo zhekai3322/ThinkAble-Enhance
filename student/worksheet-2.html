@@ -4,14 +4,9 @@
   <meta charset="UTF-8">
   <title>Worksheet 2 – Number Recognition</title>
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../student.css">
-  <style>
-    .choice-box { padding:10px;margin:5px;border:2px solid #ccc;
-      border-radius:8px;display:inline-block;cursor:pointer;
-      font-size:1.2rem;min-width:40px;text-align:center; }
-    .selected { border-color:#4caf50;background:#e8f5e9; }
-  </style>
+  <link rel="stylesheet" href="student.css">
 </head>
+
 <body>
 
 <header>
@@ -23,56 +18,73 @@
   </nav>
 </header>
 
-<main>
-  <h2>Tap the correct answer</h2>
+<!-- Pass when score >= 4 -->
+<main data-pass="4">
+  <h2>Tap the correct answers</h2>
 
-  <h3>1. Point to <strong>1</strong></h3>
-  <div class="choice-box" data-answer="true">1</div>
-  <div class="choice-box" data-answer="false">3</div>
+  <div class="ws-content">
 
-  <h3>2. Circle <strong>1</strong> and <strong>2</strong></h3>
-  <div class="choice-box" data-answer="true">1</div>
-  <div class="choice-box" data-answer="true">2</div>
-  <div class="choice-box" data-answer="false">4</div>
+    <!-- Q1 -->
+    <div class="question">
+      <h3>1. Point to <strong>1</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="true">1</div>
+        <div class="choice-box" data-answer="false">3</div>
+      </div>
+    </div>
 
-  <h3>3. Point to <strong>3</strong></h3>
-  <div class="choice-box" data-answer="false">1</div>
-  <div class="choice-box" data-answer="false">2</div>
-  <div class="choice-box" data-answer="true">3</div>
+    <!-- Q2 -->
+    <div class="question">
+      <h3>2. Circle <strong>1</strong> and <strong>2</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="true">1</div>
+        <div class="choice-box" data-answer="true">2</div>
+        <div class="choice-box" data-answer="false">4</div>
+      </div>
+    </div>
 
-  <h3>4. Circle <strong>4</strong></h3>
-  <div class="choice-box" data-answer="false">2</div>
-  <div class="choice-box" data-answer="true">4</div>
-  <div class="choice-box" data-answer="false">5</div>
+    <!-- Q3 -->
+    <div class="question">
+      <h3>3. Point to <strong>3</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="false">1</div>
+        <div class="choice-box" data-answer="false">2</div>
+        <div class="choice-box" data-answer="true">3</div>
+      </div>
+    </div>
 
-  <h3>5. Point to <strong>5</strong></h3>
-  <div class="choice-box" data-answer="false">3</div>
-  <div class="choice-box" data-answer="true">5</div>
+    <!-- Q4 -->
+    <div class="question">
+      <h3>4. Circle <strong>4</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="false">2</div>
+        <div class="choice-box" data-answer="true">4</div>
+        <div class="choice-box" data-answer="false">5</div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question">
+      <h3>5. Point to <strong>5</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="false">3</div>
+        <div class="choice-box" data-answer="true">5</div>
+      </div>
+    </div>
+
+  </div>
 
   <button class="btn" id="submitBtn">Submit</button>
   <p id="resultText" style="font-size:1.2rem;margin-top:1rem;"></p>
+
+  <button class="btn secondary" id="doneBtn" style="display:none;margin-top:1rem;">
+    Done
+  </button>
+
 </main>
 
+<!-- Universal worksheet engine -->
 <script src="../script.js"></script>
-<script>
-  const boxes = document.querySelectorAll(".choice-box");
-  boxes.forEach(b => {
-    b.addEventListener("click", () => {
-      b.classList.toggle("selected");
-    });
-  });
 
-  document.getElementById("submitBtn").addEventListener("click", () => {
-    let score = 0;
-    boxes.forEach(b => {
-      if (b.dataset.answer === "true" && b.classList.contains("selected")) {
-        score++;
-      }
-    });
-    if(score >= 4){ addStar(); }
-    document.getElementById("resultText").innerText =
-      "Your score: " + score;
-  });
-</script>
 </body>
 </html>

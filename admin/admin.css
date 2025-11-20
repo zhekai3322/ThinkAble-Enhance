@@ -46,3 +46,76 @@
   gap: 1rem;
   margin-top: 1rem;
 }
+
+/* ===========================
+      BUILDER LAYOUT
+=========================== */
+
+.builder-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1.5rem;
+}
+
+/* Toolbar */
+.builder-toolbar {
+  background: var(--blue-light);
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #bbdefb;
+}
+.builder-toolbar h3 {
+  margin-top: 0;
+}
+.tool-item {
+  padding: 0.5rem;
+  background: #fff;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: grab;
+}
+.tool-item:active {
+  cursor: grabbing;
+}
+
+/* Workspace */
+.builder-workspace input,
+.builder-workspace textarea {
+  margin-bottom: 1rem;
+}
+
+/* Canvas */
+.builder-canvas {
+  padding: 1rem;
+  border-radius: 10px;
+  background: #fefefe;
+  border: 2px dashed #ccc;
+  min-height: 300px;
+}
+
+/* Component blocks */
+.builder-block {
+  padding: 1rem;
+  background: var(--blue-light);
+  border: 1px solid #bbdefb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.block-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.block-handle {
+  cursor: move;
+  font-size: 1.2rem;
+}
+
+.block-remove {
+  cursor: pointer;
+  color: red;
+}

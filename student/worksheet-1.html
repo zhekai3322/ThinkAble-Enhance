@@ -4,22 +4,9 @@
   <meta charset="UTF-8">
   <title>Worksheet 1 – Alphabets a–f</title>
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../student.css">
-  <style>
-    .choice-box {
-      padding: 10px;
-      margin: 5px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      display: inline-block;
-      cursor: pointer;
-      font-size: 1.2rem;
-      min-width: 40px;
-      text-align: center;
-    }
-    .selected { border-color: #4caf50; background:#e8f5e9; }
-  </style>
+  <link rel="stylesheet" href="./student.css">
 </head>
+
 <body>
 
 <header>
@@ -31,62 +18,67 @@
   </nav>
 </header>
 
-<main>
+<!-- IMPORTANT: data-pass="6" tells the universal engine the passing score -->
+<main data-pass="6">
   <h2>Tap the correct answers</h2>
 
-  <!-- Q1 -->
-  <h3>1. Point to <strong>a</strong></h3>
-  <div class="choice-box" data-answer="false">b</div>
-  <div class="choice-box" data-answer="true">a</div>
-  <div class="choice-box" data-answer="false">d</div>
+  <div class="ws-content">
 
-  <!-- Q2 -->
-  <h3>2. Circle <strong>a</strong> and <strong>b</strong></h3>
-  <div class="choice-box" data-answer="true">a</div>
-  <div class="choice-box" data-answer="true">b</div>
-  <div class="choice-box" data-answer="false">d</div>
-  <div class="choice-box" data-answer="false">f</div>
+    <!-- Q1 -->
+    <div class="question">
+      <h3>1. Point to <strong>a</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="false">b</div>
+        <div class="choice-box" data-answer="true">a</div>
+        <div class="choice-box" data-answer="false">d</div>
+      </div>
+    </div>
 
-  <!-- Q3 -->
-  <h3>3. Point to <strong>c</strong></h3>
-  <div class="choice-box" data-answer="false">a</div>
-  <div class="choice-box" data-answer="false">b</div>
-  <div class="choice-box" data-answer="true">c</div>
+    <!-- Q2 -->
+    <div class="question">
+      <h3>2. Circle <strong>a</strong> and <strong>b</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="true">a</div>
+        <div class="choice-box" data-answer="true">b</div>
+        <div class="choice-box" data-answer="false">d</div>
+        <div class="choice-box" data-answer="false">f</div>
+      </div>
+    </div>
 
-  <!-- Q4 -->
-  <h3>4. Circle <strong>a</strong> and <strong>c</strong></h3>
-  <div class="choice-box" data-answer="true">a</div>
-  <div class="choice-box" data-answer="true">c</div>
-  <div class="choice-box" data-answer="false">e</div>
-  <div class="choice-box" data-answer="false">g</div>
+    <!-- Q3 -->
+    <div class="question">
+      <h3>3. Point to <strong>c</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="false">a</div>
+        <div class="choice-box" data-answer="false">b</div>
+        <div class="choice-box" data-answer="true">c</div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question">
+      <h3>4. Circle <strong>a</strong> and <strong>c</strong></h3>
+      <div class="choices">
+        <div class="choice-box" data-answer="true">a</div>
+        <div class="choice-box" data-answer="true">c</div>
+        <div class="choice-box" data-answer="false">e</div>
+        <div class="choice-box" data-answer="false">g</div>
+      </div>
+    </div>
+
+  </div>
 
   <button class="btn" id="submitBtn">Submit</button>
-
   <p id="resultText" style="font-size:1.2rem;margin-top:1rem;"></p>
+
+  <button class="btn secondary" id="doneBtn" style="display:none;margin-top:1rem;">
+    Done
+  </button>
+
 </main>
 
+<!-- Universal script only -->
 <script src="../script.js"></script>
-<script>
-  const boxes = document.querySelectorAll(".choice-box");
-  boxes.forEach(box => {
-    box.addEventListener("click", () => {
-      box.classList.toggle("selected");
-    });
-  });
 
-  document.getElementById("submitBtn").addEventListener("click", () => {
-    let score = 0;
-    boxes.forEach(b => {
-      const correct = b.dataset.answer === "true";
-      const picked = b.classList.contains("selected");
-      if (correct && picked) score++;
-    });
-    if(score >= 6){
-      addStar();
-    }
-    document.getElementById("resultText").innerText =
-      "Your score: " + score + " (Stars earned if correct!)";
-  });
-</script>
 </body>
 </html>
