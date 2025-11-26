@@ -45,9 +45,9 @@ header {
   justify-content: space-between;
   align-items: center;
   border-bottom: 12px solid var(--purple);
+  flex-wrap: wrap; /* ❤️ makes header stack on small screens */
 }
 
-/* logo + title wrapper */
 .header-left {
   display: flex;
   align-items: center;
@@ -56,6 +56,7 @@ header {
 
 .logo {
   height: 100px;
+  max-width: 100%;
   width: auto;
   border-radius: 8px;
 }
@@ -76,6 +77,7 @@ nav a {
   border-radius: 20px;
   font-weight: 600;
   transition: 0.2s;
+  display: inline-block;
 }
 
 nav a:hover {
@@ -201,6 +203,8 @@ table {
   border-collapse: collapse;
   margin-top: 1rem;
   font-size: 0.9rem;
+  overflow-x: auto;
+  display: block;   /* ❤️ allows horizontal scroll on small screens */
 }
 
 th,
@@ -295,9 +299,9 @@ body.largeText * {
   font-size: 1.3rem !important;
 }
 
-/* --------------------------
-   PROGRESS PAGE IMPROVEMENTS
---------------------------- */
+/* ==========================================================
+                PROGRESS PAGE IMPROVEMENTS
+========================================================== */
 
 .progress-container {
   max-width: 1000px;
@@ -324,9 +328,6 @@ body.largeText * {
   overflow-x: auto;
 }
 
-/* --------------------------
-      TABLE STYLING
---------------------------- */
 .progress-table {
   width: 100%;
   border-collapse: collapse;
@@ -348,16 +349,13 @@ body.largeText * {
 }
 
 .progress-table tbody tr:nth-child(even) {
-  background: rgba(137, 215, 202, 0.15); /* mint tint */
+  background: rgba(137, 215, 202, 0.15);
 }
 
 .progress-table tbody tr:nth-child(odd) {
   background: white;
 }
 
-/* --------------------------
-      STATUS PILL
---------------------------- */
 .status-complete {
   background: var(--peach);
   color: var(--text-dark);
@@ -373,9 +371,7 @@ body.largeText * {
   color: #666;
 }
 
-/* --------------------------
-         DARK MODE
---------------------------- */
+/* DARK MODE */
 body.dark .progress-card {
   background: var(--dark-card);
 }
@@ -404,4 +400,81 @@ body.dark .footnote {
 body.dark .status-complete {
   background: #c49f5a;
   color: #fff;
+}
+
+/* ==========================================================
+                    RESPONSIVE BREAKPOINTS ❤️
+========================================================== */
+
+/* ---------- Tablets (≤ 900px) ---------- */
+@media (max-width: 900px) {
+  header {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+
+  nav a {
+    margin: 0.3rem;
+  }
+
+  .logo {
+    height: 80px;
+  }
+
+  main {
+    margin: 1.5rem;
+    padding: 1rem;
+  }
+}
+
+/* ---------- Mobile (≤ 600px) ---------- */
+@media (max-width: 600px) {
+
+  header {
+    padding: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  main {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+  }
 }
