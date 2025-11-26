@@ -119,3 +119,33 @@
   cursor: pointer;
   color: red;
 }
+
+.card-grid {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.card {
+  background: #7d67a9;
+  padding: 20px;
+  border-radius: 12px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* pushes button to the bottom */
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  flex-grow: 1; /* makes all descriptions equal height */
+}
+
+.card .btn {
+  align-self: flex-start; /* or center / flex-end depending on what you want */
+  margin-top: 20px;
+}
