@@ -20,18 +20,18 @@ let db; // will hold the connection
 async function initDB() {
   try {
     db = await mysql.createConnection({
-      host: process.env.MYSQLHOST,
-      port: process.env.MYSQLPORT,
-      user: process.env.MYSQLUSER,
-      password: process.env.MYSQLPASSWORD,
-      database: process.env.MYSQLDATABASE
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME
     });
     console.log("✅ Connected to MySQL Database");
 
     // Start Server after DB connection
     const PORT = 3000;
     app.listen(PORT, () => {
-      console.log(`🚀 Server running at https://think-able-enhance.vercel.app/`);
+      console.log(`🚀 Server running at http://localhost:${PORT}`);
     });
 
   } catch (err) {
