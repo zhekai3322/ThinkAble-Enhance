@@ -31,7 +31,7 @@ async function initDB() {
     // Start Server after DB connection
     const PORT = 3000;
     app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`);
+      console.log(`🚀 Server running at https://think-able-enhance.vercel.app/`);
     });
 
   } catch (err) {
